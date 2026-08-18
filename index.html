@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lembaran Kerja 2 — Sayur-sayuran dan Buah-buahan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EAF1E1;
+    --paper: #FFFDF7;
+    --ink: #263521;
+    --ink-soft: #55624C;
+    --sayur: #3F7D45;
+    --sayur-soft: #DCEBD9;
+    --buah: #D9642C;
+    --buah-soft: #FBE3D1;
+    --gold: #E8A93A;
+    --good: #2F9E44;
+    --good-bg: #E5F6E8;
+    --bad: #C7402B;
+    --bad-bg: #FCE7E2;
+    --line: #D8CFB8;
+    --shadow: 0 6px 18px rgba(38,53,33,0.10);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 10% 5%, rgba(63,125,69,0.07), transparent 40%),
+      radial-gradient(circle at 90% 15%, rgba(217,100,44,0.07), transparent 40%),
+      var(--bg);
+    font-family:'Noto Sans Thai','Baloo 2',sans-serif;
+    color:var(--ink);
+    padding: 0 0 60px;
+  }
+  h1,h2,h3,.display{ font-family:'Baloo 2','Noto Sans Thai',sans-serif; }
+
+  .bunting{ display:flex; justify-content:center; gap:0; overflow:hidden; padding-top:14px; user-select:none;}
+  .flag{
+    width:56px; height:64px; clip-path: polygon(0 0, 100% 0, 50% 100%);
+    display:flex; align-items:flex-start; justify-content:center; padding-top:8px; font-size:20px;
+    transform-origin: top center; animation: sway 3.4s ease-in-out infinite; margin: 0 -2px;
+  }
+  .flag:nth-child(odd){ background: var(--sayur); animation-delay:.15s;}
+  .flag:nth-child(3n){ background: var(--buah); }
+  .flag:nth-child(4n){ background: var(--gold); animation-delay:.4s;}
+  @keyframes sway{ 0%,100%{ transform: rotate(-3deg);} 50%{ transform: rotate(3deg);} }
+  @media (prefers-reduced-motion: reduce){ .flag{ animation:none; } }
+
+  header{ max-width: 860px; margin: 0 auto; padding: 8px 24px 22px; text-align:center; }
+  .eyebrow{
+    display:inline-block; font-size:13px; font-weight:700; letter-spacing:.08em;
+    color:var(--buah); background:var(--buah-soft); padding:4px 14px; border-radius:999px; margin-bottom:12px;
+  }
+  h1{ font-size: clamp(28px,5vw,42px); margin:0 0 6px; font-weight:800; line-height:1.15;}
+  h1 .accent{ color:var(--sayur); }
+  .subtitle{ color:var(--ink-soft); font-size:16px; margin:0 auto; max-width:540px; line-height:1.6;}
+
+  .info-card{
+    max-width:860px; margin: 22px auto 0; background:var(--paper);
+    border:1.5px dashed var(--line); border-radius:16px; padding:16px 22px;
+    display:grid; grid-template-columns: repeat(3,1fr); gap:14px; box-shadow: var(--shadow);
+  }
+  .info-field label{ display:block; font-size:12px; font-weight:700; color:var(--ink-soft); margin-bottom:4px; letter-spacing:.03em;}
+  .info-field input{
+    width:100%; border:none; border-bottom:2px solid var(--line); background:transparent;
+    font-family:inherit; font-size:15px; padding:4px 2px; color:var(--ink);
+  }
+  .info-field input:focus{ outline:none; border-color:var(--sayur); }
+  @media (max-width:600px){ .info-card{ grid-template-columns:1fr; } }
+
+  .scorebar{
+    position: sticky; top:0; z-index:20; background: rgba(234,241,225,0.92); backdrop-filter: blur(6px);
+    border-bottom:1.5px solid var(--line); padding:10px 20px; margin-top:26px;
+  }
+  .scorebar-inner{ max-width:860px; margin:0 auto; display:flex; align-items:center; gap:14px; }
+  .scorebar-label{ font-weight:700; font-size:14px; white-space:nowrap;}
+  .track{ flex:1; height:12px; background:#DCE6CF; border-radius:999px; overflow:hidden; border:1px solid var(--line); }
+  .fill{ height:100%; width:0%; border-radius:999px; background: linear-gradient(90deg, var(--sayur), var(--gold), var(--buah)); transition: width .5s ease; }
+  .score-num{ font-weight:800; font-size:15px; min-width:56px; text-align:right;}
+
+  /* ---------- Glossary baskets ---------- */
+  .baskets{ max-width:860px; margin: 26px auto 0; padding:0 22px; display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:600px){ .baskets{ grid-template-columns:1fr; } }
+  .basket{ border-radius:16px; padding:14px 18px; box-shadow: var(--shadow); }
+  .basket.sayur{ background:var(--sayur-soft); border:1.5px solid var(--sayur); }
+  .basket.buah{ background:var(--buah-soft); border:1.5px solid var(--buah); }
+  .basket-title{ font-weight:800; font-size:14.5px; margin-bottom:8px; display:flex; align-items:center; gap:6px;}
+  .basket.sayur .basket-title{ color:#245B29; }
+  .basket.buah .basket-title{ color:#9C4818; }
+  .basket-list{ display:flex; flex-wrap:wrap; gap:6px 10px; font-size:13.5px; }
+  .basket-list span{ white-space:nowrap; }
+  .basket-list b{ font-weight:700; }
+
+  .questions{ max-width:860px; margin: 30px auto 0; padding: 0 22px; display:flex; flex-direction:column; gap:16px;}
+  .qcard{
+    background:var(--paper); border:1px solid var(--line); border-radius:18px;
+    padding:18px 20px 16px; box-shadow: var(--shadow); transition: border-color .25s, box-shadow .25s;
+  }
+  .qcard.correct{ border-color: var(--good); box-shadow: 0 6px 18px rgba(47,158,68,0.15); }
+  .qcard.wrong{ border-color: var(--bad); box-shadow: 0 6px 18px rgba(199,64,43,0.15); }
+  .qrow{ display:flex; gap:14px; align-items:flex-start; }
+  .qnum{
+    flex:0 0 auto; width:32px; height:32px; border-radius:50%; background: var(--ink); color:var(--paper);
+    font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; margin-top:2px;
+  }
+  .qcard.correct .qnum{ background:var(--good); }
+  .qcard.wrong .qnum{ background:var(--bad); }
+  .qtext{ flex:1; font-size:16.5px; line-height:1.6; font-weight:600;}
+
+  .options{ margin: 12px 0 0 46px; display:flex; flex-direction:column; gap:8px; }
+  .opt{
+    display:flex; align-items:center; gap:10px; background:#F5F1E4; border:1.5px solid var(--line);
+    border-radius:12px; padding:9px 14px; cursor:pointer; font-size:15px; transition: all .15s; text-align:left;
+    font-family:inherit; color:var(--ink);
+  }
+  .opt:hover{ border-color: var(--sayur); background:var(--sayur-soft); }
+  .opt .letter{
+    flex:0 0 auto; width:24px; height:24px; border-radius:50%; border:1.5px solid var(--ink-soft);
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:var(--ink-soft);
+  }
+  .opt.selected{ border-color: var(--ink); }
+  .opt.correct{ background:var(--good-bg); border-color:var(--good); }
+  .opt.correct .letter{ background:var(--good); border-color:var(--good); color:#fff; }
+  .opt.wrong{ background:var(--bad-bg); border-color:var(--bad); }
+  .opt.wrong .letter{ background:var(--bad); border-color:var(--bad); color:#fff; }
+  .opt:disabled{ cursor:default; }
+  .opt:disabled:hover{ background:inherit; border-color:inherit; }
+
+  .qtools{ display:flex; gap:8px; margin-top:10px; padding-left:46px; flex-wrap:wrap;}
+  .btn-hint{
+    font-family:inherit; font-size:13px; font-weight:700; color:var(--buah); background:var(--buah-soft);
+    border:1px solid transparent; border-radius:999px; padding:5px 13px; cursor:pointer; transition: background .2s;
+  }
+  .btn-hint:hover{ background:#F5CBA8; }
+
+  .hint-box{
+    margin: 10px 0 0 46px; padding:10px 14px; background:#FFF6E6; border:1px dashed var(--gold);
+    border-radius:10px; font-size:13.5px; color:#7A5A16; line-height:1.6; display:none;
+  }
+  .hint-box.show{ display:block; }
+  .hint-box b{ color:#8A5A00; }
+
+  .feedback{ margin: 12px 0 0 46px; padding:11px 15px; border-radius:12px; font-size:14px; line-height:1.65; display:none; }
+  .feedback.show{ display:block; }
+  .feedback.good{ background:var(--good-bg); color:#1E6B2E; border:1px solid #B6E3C0; }
+  .feedback.bad{ background:var(--bad-bg); color:#9C2D1B; border:1px solid #F0BBAE; }
+  .feedback .th{ display:block; margin-top:2px; }
+
+  .summary{
+    max-width:860px; margin: 32px auto 0; padding: 24px 26px; text-align:center;
+    background: linear-gradient(135deg, var(--buah-soft), var(--sayur-soft)); border-radius:20px; border:1.5px solid var(--line);
+  }
+  .summary h3{ margin:0 0 6px; font-size:22px; }
+  .summary p{ margin:0; color:var(--ink-soft); font-size:14.5px; }
+  .btn-reset{
+    margin-top:14px; font-family:inherit; font-weight:700; font-size:14px; background:var(--ink); color:var(--paper);
+    border:none; border-radius:999px; padding:9px 20px; cursor:pointer;
+  }
+  .btn-reset:hover{ opacity:.88; }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:26px; padding:0 20px;}
+</style>
+</head>
+<body>
+
+<div class="bunting" id="bunting"></div>
+
+<header>
+  <span class="eyebrow">LEMBARAN KERJA 2 · INTERAKTIF</span>
+  <h1>Pilih Jawapan yang <span class="accent">Betul</span></h1>
+  <p class="subtitle">แบบฝึกหัดปรนัย ผักและผลไม้ภาษามลายู — เลือกคำตอบ A, B หรือ C ที่ถูกต้อง</p>
+</header>
+
+<div class="info-card">
+  <div class="info-field"><label>NAMA</label><input type="text" placeholder="Tulis nama..."></div>
+  <div class="info-field"><label>KELAS</label><input type="text" placeholder="Tulis kelas..."></div>
+  <div class="info-field"><label>TARIKH</label><input type="text" placeholder="Tulis tarikh..."></div>
+</div>
+
+<div class="scorebar">
+  <div class="scorebar-inner">
+    <span class="scorebar-label">🧺 Markah</span>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <span class="score-num" id="scoreNum">0 / 10</span>
+  </div>
+</div>
+
+<div class="baskets">
+  <div class="basket sayur">
+    <div class="basket-title">🥬 Sayur-sayuran (ผัก)</div>
+    <div class="basket-list">
+      <span><b>Tomato</b> มะเขือเทศ</span>
+      <span><b>Lobak merah</b> แครอท</span>
+      <span><b>Timun</b> แตงกวา</span>
+      <span><b>Bayam</b> ผักโขม</span>
+      <span><b>Kentang</b> มันฝรั่ง</span>
+    </div>
+  </div>
+  <div class="basket buah">
+    <div class="basket-title">🍉 Buah-buahan (ผลไม้)</div>
+    <div class="basket-list">
+      <span><b>Epal</b> แอปเปิล</span>
+      <span><b>Pisang</b> กล้วย</span>
+      <span><b>Mangga</b> มะม่วง</span>
+      <span><b>Tembikai</b> แตงโม</span>
+      <span><b>Oren</b> ส้ม</span>
+    </div>
+  </div>
+</div>
+
+<div class="questions" id="questions"></div>
+
+<div class="summary" id="summary">
+  <h3 id="summaryTitle">Mulakan menjawab! 🌱</h3>
+  <p id="summaryText">Jawab semua 10 soalan untuk lihat markah akhir anda.</p>
+  <button class="btn-reset" id="resetBtn">Mula Semula (เริ่มใหม่)</button>
+</div>
+
+<footer>Dibina daripada Lembaran Kerja 2 — Sayur-sayuran dan Buah-buahan</footer>
+
+<script>
+const wordInfo = {
+  "Tomato":      { th: "มะเขือเทศ", cat: "sayur" },
+  "Lobak merah": { th: "แครอท",     cat: "sayur" },
+  "Timun":       { th: "แตงกวา",    cat: "sayur" },
+  "Bayam":       { th: "ผักโขม",    cat: "sayur" },
+  "Kentang":     { th: "มันฝรั่ง",   cat: "sayur" },
+  "Epal":        { th: "แอปเปิล",   cat: "buah"  },
+  "Pisang":      { th: "กล้วย",     cat: "buah"  },
+  "Mangga":      { th: "มะม่วง",    cat: "buah"  },
+  "Tembikai":    { th: "แตงโม",     cat: "buah"  },
+  "Oren":        { th: "ส้ม",       cat: "buah"  },
+};
+const catLabel = c => c === "sayur" ? "sayur-sayuran (ผัก)" : "buah-buahan (ผลไม้)";
+const flagIcons = ["🍅","🥕","🥒","🍏","🍌","🍉","🍊","🥦","🥔","🍈"];
+
+const questions = [
+  { q:"Apakah sayur yang berwarna merah?",
+    options:["Tomato","Pisang","Epal"], correct:0,
+    hintMY:"Buah kecil bulat merah ini kerap digunakan dalam sos dan salad, walaupun rasanya masam-manis.",
+    hintTH:"ผลกลมเล็กสีแดงนี้ ใช้ทำซอสและสลัดบ่อยๆ แม้รสจะเปรี้ยวอมหวาน",
+    single:true },
+  { q:"Apakah sayur yang berwarna hijau?",
+    options:["Oren","Timun","Mangga"], correct:1,
+    hintMY:"Sayur ini panjang, banyak airnya dan sering dimakan sejuk dalam salad.",
+    hintTH:"ผักทรงยาว มีน้ำเยอะ มักกินเย็นๆ ในสลัด",
+    single:true },
+  { q:"Apakah buah yang berwarna kuning?",
+    options:["Pisang","Bayam","Lobak merah"], correct:0,
+    hintMY:"Buah melengkung ini mudah dikupas dan sesuai untuk sarapan.",
+    hintTH:"ผลไม้รูปโค้งนี้ปอกง่าย เหมาะกินตอนเช้า",
+    single:true },
+  { q:"Apakah buah yang rasanya manis dan berair?",
+    options:["Kentang","Tembikai","Timun"], correct:1,
+    hintMY:"Buah besar berkulit hijau ini isinya merah dan penuh air.",
+    hintTH:"ผลไม้ลูกใหญ่เปลือกเขียว เนื้อในสีแดงมีน้ำเยอะ",
+    single:true },
+  { q:"Apakah buah yang boleh dibuat jus?",
+    options:["Oren","Bayam","Lobak merah"], correct:0,
+    hintMY:"Kulitnya jingga, sering diperah untuk minuman waktu pagi.",
+    hintTH:"เปลือกสีส้ม มักคั้นเป็นเครื่องดื่มตอนเช้า",
+    single:true },
+  { q:"\u201cSaya makan buah yang berwarna merah atau hijau.\u201d Apakah buah itu?",
+    options:["Epal","Pisang","Oren"], correct:0,
+    hintMY:"Buah renyah ini ada jenis berkulit merah dan ada jenis berkulit hijau.",
+    hintTH:"ผลไม้กรอบนี้ มีทั้งพันธุ์เปลือกแดงและเปลือกเขียว",
+    single:true },
+  { q:"\u201cSaya suka makan buah yang manis.\u201d Apakah jawapan yang sesuai?",
+    options:["Mangga","Bayam","Kentang"], correct:0,
+    hintMY:"Buah tropika ini berwarna kuning-jingga apabila masak dan sangat manis.",
+    hintTH:"ผลไม้เมืองร้อนนี้ สีเหลืองส้มเมื่อสุก รสหวานมาก",
+    single:true },
+  { q:"Yang manakah sayur-sayuran?",
+    options:["Epal dan pisang","Mangga dan oren","Tomato dan timun"], correct:2,
+    hintMY:"Fikirkan: pasangan mana yang kedua-duanya ditanam sebagai sayur di kebun.",
+    hintTH:"คิดดู: คู่ไหนที่ทั้งสองอย่างถูกปลูกเป็นผักในสวน",
+    single:false, group:"sayur" },
+  { q:"Yang manakah buah-buahan?",
+    options:["Bayam dan kentang","Epal dan mangga","Timun dan tomato"], correct:1,
+    hintMY:"Fikirkan: pasangan mana yang kedua-duanya biasa dimakan sebagai buah pencuci mulut.",
+    hintTH:"คิดดู: คู่ไหนที่ทั้งสองอย่างมักกินเป็นผลไม้ของหวาน",
+    single:false, group:"buah" },
+  { q:"Apakah tajuk yang sesuai untuk perkataan tomato, timun, epal dan mangga?",
+    options:["Haiwan","Sayur-sayuran dan buah-buahan","Anggota badan"], correct:1,
+    hintMY:"Semua perkataan ini adalah nama makanan yang datang dari kebun atau ladang.",
+    hintTH:"คำเหล่านี้ล้วนเป็นชื่ออาหารที่มาจากสวนหรือไร่",
+    single:false, group:null },
+];
+
+let state = questions.map(()=> null);
+
+function buildBunting(){
+  document.getElementById('bunting').innerHTML = flagIcons.map(i=>`<div class="flag">${i}</div>`).join('');
+}
+
+function optionExplain(q, optIndex){
+  const text = q.options[optIndex];
+  if(q.single){
+    const info = wordInfo[text];
+    return `"${text}" ialah ${catLabel(info.cat)}, bermaksud "${info.th}".`;
+  }
+  return `"${text}"`;
+}
+function optionExplainTH(q, optIndex){
+  const text = q.options[optIndex];
+  if(q.single){
+    const info = wordInfo[text];
+    return `${text} เป็น${catLabel(info.cat)} หมายถึง "${info.th}"`;
+  }
+  return `${text}`;
+}
+
+function buildQuestions(){
+  const el = document.getElementById('questions');
+  el.innerHTML = questions.map((q,i)=>{
+    const opts = q.options.map((o,j)=>`
+      <button class="opt" id="opt-${i}-${j}" onclick="selectOption(${i},${j})">
+        <span class="letter">${String.fromCharCode(65+j)}</span>${o}
+      </button>`).join('');
+    return `
+    <div class="qcard" id="qcard-${i}">
+      <div class="qrow">
+        <div class="qnum">${i+1}</div>
+        <div class="qtext">${q.q}</div>
+      </div>
+      <div class="options">${opts}</div>
+      <div class="qtools">
+        <button class="btn-hint" onclick="toggleHint(${i})">💡 Petunjuk / คำใบ้</button>
+      </div>
+      <div class="hint-box" id="hint-${i}">
+        <b>Petunjuk:</b> ${q.hintMY}<br>
+        <span class="th">💬 ${q.hintTH}</span>
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+    </div>`;
+  }).join('');
+}
+
+function toggleHint(i){ document.getElementById(`hint-${i}`).classList.toggle('show'); }
+
+function selectOption(i, j){
+  const q = questions[i];
+  const card = document.getElementById(`qcard-${i}`);
+  const fb = document.getElementById(`fb-${i}`);
+  const isCorrect = j === q.correct;
+  state[i] = isCorrect;
+
+  // lock and style all options
+  for(let k=0;k<q.options.length;k++){
+    const btn = document.getElementById(`opt-${i}-${k}`);
+    btn.disabled = true;
+    btn.classList.remove('selected','correct','wrong');
+    if(k === q.correct) btn.classList.add('correct');
+    if(k === j && !isCorrect) btn.classList.add('wrong');
+    if(k === j) btn.classList.add('selected');
+  }
+
+  card.classList.remove('correct','wrong');
+  card.classList.add(isCorrect ? 'correct' : 'wrong');
+  fb.classList.remove('show','good','bad');
+  fb.classList.add('show', isCorrect ? 'good' : 'bad');
+
+  if(isCorrect){
+    fb.innerHTML = `🟢 <b>Betul!</b> ${optionExplain(q,j)}
+      <span class="th">เยี่ยมมาก! ${optionExplainTH(q,j)}</span>`;
+  } else {
+    fb.innerHTML = `🔴 <b>Belum tepat!</b> ${optionExplain(q,j)}
+      Jawapan yang betul ialah <b>${q.options[q.correct]}</b>.
+      <span class="th">ยังไม่ถูกนะ! ${optionExplainTH(q,j)} ส่วนคำตอบที่ถูกต้องคือ ${q.options[q.correct]}</span>`;
+  }
+
+  updateScore();
+}
+
+function updateScore(){
+  const correctCount = state.filter(s=>s===true).length;
+  const answeredCount = state.filter(s=>s!==null).length;
+  document.getElementById('scoreNum').textContent = `${correctCount} / 10`;
+  document.getElementById('fill').style.width = (correctCount/10*100)+'%';
+
+  const title = document.getElementById('summaryTitle');
+  const text = document.getElementById('summaryText');
+  if(answeredCount === 0){
+    title.textContent = 'Mulakan menjawab! 🌱';
+    text.textContent = 'Jawab semua 10 soalan untuk lihat markah akhir anda.';
+  } else if(answeredCount < 10){
+    title.textContent = `Teruskan! Anda sudah jawab ${answeredCount} daripada 10 soalan.`;
+    text.textContent = `Betul setakat ini: ${correctCount}. Gunakan butang 💡 Petunjuk jika perlu bantuan.`;
+  } else if(correctCount === 10){
+    title.textContent = '🎉 Syabas! Markah penuh 10/10!';
+    text.textContent = 'เก่งมาก! คุณตอบถูกทุกข้อเลย — เชี่ยวชาญคำศัพท์ผักและผลไม้ภาษามลายูแล้ว!';
+  } else {
+    title.textContent = `Selesai! Markah anda: ${correctCount} / 10`;
+    text.textContent = 'Semak semula soalan yang berwarna merah, atau tekan Mula Semula untuk cuba lagi.';
+  }
+}
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  state = questions.map(()=> null);
+  buildQuestions();
+  updateScore();
+});
+
+buildBunting();
+buildQuestions();
+updateScore();
+</script>
+
+</body>
+</html>
